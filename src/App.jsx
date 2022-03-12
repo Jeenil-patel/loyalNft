@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import "./styles/Navbar.css"
-
 import Navbar from './components/navbar';
 
 

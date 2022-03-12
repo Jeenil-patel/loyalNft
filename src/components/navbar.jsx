@@ -1,13 +1,14 @@
 import React from "react";
-
-
-
+import logo from "../logo.png"
 
 const Navbar = () => {
 
     return (
         <div className='navbar'>
-            <h3>Loyal Nfts</h3>
+            <div className="logo">
+            <img className="image" src={logo} alt="" />
+            <div className="logoH"><h2>Loyal NFTs</h2></div>
+            </div>
             <div className="items">
             <ul>
                
