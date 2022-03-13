@@ -12,6 +12,7 @@ html,body{
     height: 70px;
     margin-top: 4px;
     margin-left: 10px;
+    cursor: pointer;
 }
 .logo{
     display:flex;
@@ -44,7 +45,12 @@ html,body{
 ul{
     display: flex;
     list-style: none;
- 
+   
+}
+
+ul a {
+    text-decoration: none;
+    color: #fff
 }
 
 ul li {
@@ -52,6 +58,7 @@ ul li {
     margin-right: 75px;
     text-align: center;
     position: relative;
+    cursor: pointer;
 }
 
 .createBtn {
@@ -62,6 +69,7 @@ ul li {
     border: none;
     color: #fff;
     margin-left: 20px;
+    cursor: pointer;
 }
 
 .connectBtn{
@@ -72,4 +80,5 @@ ul li {
     border: none;
     color: #333;
     margin-left: 80px;
+    cursor: pointer;
 }

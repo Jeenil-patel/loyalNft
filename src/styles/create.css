@@ -1,0 +1,12 @@
+.forms{
+    margin-top: 100px;
+   
+    display: flex;
+    flex-direction: column;
+   align-items: stretch;
+}
+
+.forms input,button{
+    width: 300px;
+    height: 40px;
+}
