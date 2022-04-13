@@ -46,8 +46,8 @@ const Create = () => {
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
             // run a function that creates sale and passes in the url 
          
-            createSale(url)
-            
+           await createSale(url)
+            console.log(url);
 
         } catch (error) {
             console.log('Error uploading file:', error);
@@ -69,7 +69,7 @@ const Create = () => {
         let event = tx.events[0];
         let value = event.args[2];
         let tokenId = value.toNumber();
-        const price = ethers.utils.parseUnits(price, 'ether');
+        const p = ethers.utils.parseUnits(price, 'ether');
 
        console.log(tokenId,price)
     }
