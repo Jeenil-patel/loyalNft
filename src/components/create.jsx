@@ -71,7 +71,7 @@ const Create = () => {
         let tokenId = value.toNumber();
         const p = ethers.utils.parseUnits(price, 'ether');
 
-       console.log(tokenId,price)
+       console.log(tokenId,p)
     }
 
     return(
