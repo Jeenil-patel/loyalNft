@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Create from "./components/create";
 import Explore from "./components/explore";
 import "./styles/create.css";
+import './styles/home.css'
 import Home from "./components/home";
 
 function App() {
