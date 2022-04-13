@@ -6,7 +6,7 @@ const Explore = () => {
 
     return(
         <div>
-            <Navbar/>
+           
             <h1>ddddd</h1>
             <h1>Explore Page Still On Progress!!</h1>
         </div>

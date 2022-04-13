@@ -1,9 +1,10 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import logo from "../logo2.png";
 import { ethers } from 'ethers';
 import Web3Modal from 'web3modal';
 import { Link } from "react-router-dom";
 import Create from "./create";
+
 
 
 const Navbar = () => {
@@ -29,17 +30,21 @@ const Navbar = () => {
             <Link to="/create">
                     <button className="createBtn" >Create</button>
             </Link>
-            <button className="connectBtn" onClick={async ()=>{
+            
+          
+           
+            {Signer === "" ?   <button className="connectBtn" onClick={async ()=>{
                 const web3Modal = new Web3Modal();
                 const connection = await web3Modal.connect();
                 const provider = new ethers.providers.Web3Provider(connection);
                 const signer = provider.getSigner();
                 const sign = await signer.signMessage("Allow LoyalNft to give access to Metamask!!")
-                console.log(signer,sign);
-                setSigner(signer);
-            }}>Connect</button>
-           
+                const a = await signer.getAddress();
+                setSigner(a);
+                console.log(Signer);
+            }}>Connect</button> : <h1 className="Text">{`${Signer}`}</h1> }
         </div>
+       
         </div>
         
     )

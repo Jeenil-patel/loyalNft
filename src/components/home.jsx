@@ -3,6 +3,7 @@ import { connectors } from "web3modal";
 import Navbar from "./navbar";
 import { useLocation } from "react-router-dom";
 import { create as ipfsHttpClient } from 'ipfs-http-client'
+import hl from '../NFTMARKETPLACE.png' 
 
 
 
@@ -18,9 +19,9 @@ const Home = () => {
     
     return(
         <div className="home">
-            <Navbar/>
-            <h1>ddddd</h1>
-            <h1>Home Page Still On Progress!!</h1>
+           
+            <img className="hl" src={hl}></img>
+          
         </div>
     )
 }
