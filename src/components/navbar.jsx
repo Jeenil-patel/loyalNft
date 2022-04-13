@@ -19,7 +19,7 @@ const Navbar = () => {
             </div>
             <div className="items">
             <ul>
-               <Link to="/">                
+               <Link to={{pathname: "/", state: {signer: Signer}}} >                
                     <li>Home</li> 
                </Link>
                <Link to="/explore">
