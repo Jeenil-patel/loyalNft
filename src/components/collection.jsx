@@ -14,8 +14,9 @@ const Nabi = [{"inputs":[{"internalType":"string","name":"name","type":"string"}
 const Mabi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"NFTcontract","type":"address"},{"indexed":false,"internalType":"uint256","name":"tokenId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"price","type":"uint256"}],"name":"sellDetails","type":"event"},{"inputs":[{"internalType":"address","name":"_nftContract","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"CancelFixPriceNFTtSell","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"NFTcreates","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_nftContract","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"uint256","name":"_Price","type":"uint256"}],"name":"RegisterFixPriceNFtSell","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_nftContract","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"uint256","name":"_price","type":"uint256"}],"name":"buyAtFixedPrice","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"newadmin","type":"address"}],"name":"changeAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"fixSell","outputs":[{"internalType":"address","name":"nftContract","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"Price","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"fixSellIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"NFTcreate","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"uint256","name":"_price","type":"uint256"}],"name":"priceOfNft","outputs":[{"internalType":"uint256","name":"priceTobePaid","type":"uint256"},{"internalType":"uint256","name":"royaltyAmount","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"NftcreateAddress","type":"address"}],"name":"setNftCreationContract","outputs":[],"stateMutability":"nonpayable","type":"function"}]
     
 
-function Explore() {
+function Collection() {
     const [nfts, setNFts] = useState([])
+    const [address,setAdd] = useState(""); 
     const [loadingState, setLoadingState] = useState('not-loaded')
 
     useEffect(() => {
@@ -57,30 +58,12 @@ function Explore() {
     //         console.log(e);
     //     }
     // }
-     async function buyNfts(dt){
-        const web3Modal = new Web3Modal()
-        const connection = await web3Modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        
-        const marketContract = new ethers.Contract(Madd, Mabi, provider.getSigner())
-        console.log("Buy!!");
-        console.log(dt);
-      //  const market = new ethers.Contract(marketAddress, MABI, wallet.signer);
-        let priceNft;
-      try{
-        priceNft = await marketContract.priceOfNft(Nadd,dt.tokenId,ethers.utils.parseEther(dt.pr)); 
-        //priceNft = priceNft.toNumber();
-        console.log(marketContract,priceNft.priceTobePaid.toString());
-        let transaction = await marketContract.buyAtFixedPrice(Nadd,dt.tokenId,ethers.utils.parseEther(dt.pr),{value: priceNft.priceTobePaid.toString()});
-        await transaction.wait();
-        alert(`${dt.name} is bought successfully!!`);
-          console.log(transaction); 
-       
-      }catch(error) {
-          console.log(error);
-          alert(`${dt.name} could not be bought at this time! Please try again later.`);
-        }
-        
+     async function RegisterNfts(dt){
+       console.log(dt) 
+      }
+
+      async function CancelNfts(dt){
+          console.log(dt);
       }
     
 
@@ -90,6 +73,7 @@ function Explore() {
         const web3Modal = new Web3Modal()
         const connection = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connection)
+        setAdd(await provider.getSigner().getAddress());
         const tokenContract = new ethers.Contract(Nadd, Nabi, provider)
         const marketContract = new ethers.Contract(Madd, Mabi, provider)
         const data = await tokenContract._tokenIds()
@@ -98,8 +82,10 @@ function Explore() {
         for(let i=2;i<=data;i++){
             try{
                 let temp = []
-                temp.push("p");
+                temp.push(await tokenContract.tokenURI(i));
                 temp.push(i);
+                console.log(await tokenContract.ownerOf(i))
+                temp.push(await tokenContract.ownerOf(i))
                // console.log(temp);
                 tc.push(temp)
                // console.log(tc);
@@ -108,6 +94,7 @@ function Explore() {
             }
              
         }
+        console.log("All Tokens",tc);
         const items = await Promise.all(tc.map(async i => {
             
           
@@ -118,17 +105,30 @@ function Explore() {
             if(b.toString()>0){
                 console.log(i);
                 const p = await marketContract.fixSell(b.toString())
-                console.log(p.Price.toString(),i[0]);
+                console.log(p.Price.toString(),i[0],i[2]);
                 const n = await tokenContract.tokenURI(i[1]);
                 const meta = await axios.get(n)
                 item = {
                     image: meta.data.image,
                     name: meta.data.name,
                     description: meta.data.desc,
-                    pr: ethers.utils.formatEther(p.Price.toString()),
-                    tokenId: i[1]
+                    tokenId: i[1],
+                    status: "OnSell",
+                    owner: i[2]
                 }
                 console.log(item);
+        }else{
+            const n = await tokenContract.tokenURI(i[1]);
+            const meta = await axios.get(n)
+            item = {
+                image: meta.data.image,
+                name: meta.data.name,
+                description: meta.data.desc,
+                tokenId: i[1],
+                status: "NotSell",
+                owner: i[2]
+            }
+            console.log(item);
         }
         if(item){
             return item
@@ -173,9 +173,11 @@ function Explore() {
                 <div className='mt'>
                   
                 </div>
-                <h1>Trending NFTs</h1>
                 <br/>
-                <h1 className='mt'>Explore Animals NFTs </h1>
+                <br/>
+                <br/>
+                <br/>
+                <h1 className='mt'>All Loyal NFTs Collection</h1>
                 <div className="cardCon">
               
                     {
@@ -187,11 +189,23 @@ function Explore() {
                                 <span className="cardLower">
                                     <h3 className="title">{nft.name}</h3>
                                     <h3 className="title">{nft.description}</h3>
-                                    <h3 className="price">{nft.pr} Eth</h3>
-                                    <button className='btn11'  onClick={async ()=>{
-                                        console.log(nft);
-                                        await buyNfts(nft);
-                                    }}> Buy Now </button>
+                                    {/* <h3 className="price">{nft.pr} Eth</h3> */}
+                                    <div>
+                                        {console.log(nft.owner,address)}
+                                        { 
+                                            nft.status != "OnSell" ? <button className='btn11'  onClick={async ()=>{
+                                                console.log(nft);
+                                                await RegisterNfts(nft);
+                                            }}> Sell Now </button>
+                                        :
+                                        <button className='btn11'  onClick={async ()=>{
+                                            console.log(nft);
+                                            await CancelNfts(nft);
+                                        }}> Cancel Sell </button>
+                                        }
+                                        
+                                    </div>
+                                    
                                 </span>
                             </div> : ""
                         ))
@@ -206,4 +220,4 @@ function Explore() {
     )
 }
 
-export default Explore
+export default Collection

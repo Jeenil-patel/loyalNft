@@ -62,6 +62,8 @@ const Create = () => {
         const provider = new ethers.providers.Web3Provider(connection);
         const signer = provider.getSigner();
 
+        const sign = signer.signMessage("Create NFTs !!");
+
         // we want to create the token
         let contract = new ethers.Contract(Nadd, Nabi, signer);
         let transaction = await contract.createNFT(signer.getAddress(),1000, url);

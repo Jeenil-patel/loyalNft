@@ -26,6 +26,10 @@ const Navbar = () => {
                <Link to="/explore">
                     <li>Explore</li>    
                </Link>
+               
+               <Link to="/collection">
+                    <li>Collection</li>    
+               </Link>
             </ul>
             <Link to="/create">
                     <button className="createBtn" >Create</button>
